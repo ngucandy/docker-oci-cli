@@ -1,10 +1,12 @@
-FROM oraclelinux:7-slim
+FROM python:3.8-slim
 
 LABEL maintainer="anguyen@computer.org"
 
-RUN yum -y install oraclelinux-developer-release-el7 \
- && yum -y install python36-oci-cli \
- && yum -y update \
- && yum clean all
+RUN apt-get -y update \
+ && apt-get -y upgrade \
+ && apt-get -y clean \
+ && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT [ "/usr/bin/oci" ]
+RUN pip install --no-cache-dir oci-cli
+
+ENTRYPOINT [ "/usr/local/bin/oci" ]
